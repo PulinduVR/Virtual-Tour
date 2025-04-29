@@ -13,18 +13,17 @@ const PanoramaViewer = ({ imageUrl }) => {
     camera.updateProjectionMatrix();
   }, [camera]);
 
-  useFrame(() => {
-    if (sphereRef.current) {
-      // Add smooth rotation if needed
-      // sphereRef.current.rotation.y += 0.001;
-    }
-  });
+  // useFrame(() => {
+  //   if (sphereRef.current) {
+  //     // Add smooth rotation if needed
+  //     // sphereRef.current.rotation.y += 0.001;
+  //   }
+  // });
 
   return (
     <Sphere ref={sphereRef} args={[500, 60, 40]} scale={[-1, 1, 1]}>
       <meshBasicMaterial
         side={THREE.BackSide}
-        attach="material"
         map={new THREE.TextureLoader().load(imageUrl)}
       />
     </Sphere>

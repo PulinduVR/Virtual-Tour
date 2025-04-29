@@ -2,43 +2,32 @@ import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import PanoramaViewer from "../src/components/PanoramaViewer";
 import Controls from "../src/components/Controls";
+import scenes from "./components/Scenes";
+import NavigationLink from "./components/NavigationLink";
+import Hotsport from "./components/Hotsport";
 import "./App.css";
 
 function App() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const panoramicImages = [
-    "../src/assets/pano1.jpg",
-    // Add more image paths here
-  ];
+  const [currentSceneId, setCurrentSceneId] = useState("scene1");
+  const currentScene = scenes[currentSceneId];
 
   return (
     <div className="app-container">
       <Canvas className="canvas">
-        <PanoramaViewer imageUrl={panoramicImages[currentImageIndex]} />
+        <PanoramaViewer imageUrl={currentScene.image} />
         <Controls />
+        {currentScene.links.map((link, index) => (
+          <NavigationLink
+            key={index}
+            position={link.position}
+            label={link.label}
+            onClick={() => setCurrentSceneId(link.to)}
+          />
+        ))}
+        {currentScene.hotspots.map((spot, index) => (
+          <Hotsport key={index} position={spot.position} label={spot.label} />
+        ))}
       </Canvas>
-
-      {/* Optional Navigation Controls */}
-      <div className="navigation-controls">
-        <button
-          onClick={() =>
-            setCurrentImageIndex((prev) =>
-              prev > 0 ? prev - 1 : panoramicImages.length - 1
-            )
-          }
-        >
-          Previous
-        </button>
-        <button
-          onClick={() =>
-            setCurrentImageIndex((prev) =>
-              prev < panoramicImages.length - 1 ? prev + 1 : 0
-            )
-          }
-        >
-          Next
-        </button>
-      </div>
     </div>
   );
 }
